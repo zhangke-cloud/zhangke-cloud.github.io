@@ -615,6 +615,13 @@ body::before {
 }
 .photo-stack::-webkit-scrollbar { height: 4px; }
 .photo-stack::-webkit-scrollbar-thumb { background: var(--pink-200); border-radius: 2px; }
+.photo-thumb-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 76px; height: 76px;
+  border-radius: 6px;
+}
+.photo-thumb-wrap .img-spinner::after { width: 22px; height: 22px; border-width: 2px; }
 .photo-thumb {
   flex-shrink: 0;
   width: 76px; height: 76px;
@@ -624,7 +631,7 @@ body::before {
   box-shadow: 0 2px 8px rgba(0,0,0,0.14);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
+  display: block;
 }
 .photo-thumb:hover {
   transform: scale(1.12) translateY(-3px);
