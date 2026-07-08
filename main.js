@@ -221,12 +221,19 @@ function buildPhotoStack(photos) {
   if (!photoStack) return;
   photoStack.innerHTML = '';
   photos.forEach((ph) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'photo-thumb-wrap';
+    const spinner = document.createElement('div');
+    spinner.className = 'img-spinner';
     const img = document.createElement('img');
     img.className = 'photo-thumb';
     img.src = ph.src;
     img.alt = '';
-    img.onerror = function() { this.style.display = 'none'; };
-    photoStack.appendChild(img);
+    img.onload  = () => spinner.classList.add('hidden');
+    img.onerror = () => { spinner.classList.add('hidden'); wrap.style.display = 'none'; };
+    wrap.appendChild(spinner);
+    wrap.appendChild(img);
+    photoStack.appendChild(wrap);
   });
   if (photoHint) photoHint.style.display = 'none';
   if (photoStack) photoStack.style.display = photos.length ? '' : 'none';
@@ -406,8 +413,10 @@ function dropPolaroids(hobbyKey) {
       card.innerHTML = `
         <div class="drop-pol-pin"></div>
         <div class="drop-pol-img">
+          <div class="img-spinner"></div>
           <img src="${ph.src}" alt="${ph.cap}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            onload="this.previousElementSibling.classList.add('hidden')"
+            onerror="this.previousElementSibling.classList.add('hidden');this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="drop-pol-ph">📷</div>
         </div>
         <div class="drop-pol-cap">${ph.cap}</div>
