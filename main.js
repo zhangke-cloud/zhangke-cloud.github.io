@@ -4,13 +4,14 @@
 
 // ── Image loading spinner ─────────────────────────
 document.querySelectorAll('img').forEach(img => {
-  if (img.complete) return;
-  const wrap = img.parentElement;
-  if (!wrap) return;
+  if (img.complete && img.naturalWidth > 0) return;
+  const parent = img.parentElement;
+  if (!parent) return;
+  const cs = getComputedStyle(parent);
+  if (cs.position === 'static') parent.style.position = 'relative';
   const spinner = document.createElement('div');
   spinner.className = 'img-spinner';
-  if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative';
-  wrap.appendChild(spinner);
+  parent.insertBefore(spinner, img);
   const remove = () => spinner.classList.add('hidden');
   img.addEventListener('load', remove);
   img.addEventListener('error', remove);
