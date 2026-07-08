@@ -3,7 +3,7 @@
 ===================================================== */
 
 // ── Image loading spinner ─────────────────────────
-document.querySelectorAll('img').forEach(img => {
+function attachSpinner(img) {
   if (img.complete && img.naturalWidth > 0) return;
   const parent = img.parentElement;
   if (!parent) return;
@@ -15,7 +15,8 @@ document.querySelectorAll('img').forEach(img => {
   const remove = () => spinner.classList.add('hidden');
   img.addEventListener('load', remove);
   img.addEventListener('error', remove);
-});
+}
+document.querySelectorAll('img').forEach(attachSpinner);
 
 // ── Nav ──────────────────────────────────────────
 const nav = document.getElementById('nav');
@@ -413,14 +414,13 @@ function dropPolaroids(hobbyKey) {
       card.innerHTML = `
         <div class="drop-pol-pin"></div>
         <div class="drop-pol-img">
-          <div class="img-spinner"></div>
           <img src="${ph.src}" alt="${ph.cap}"
-            onload="this.previousElementSibling.classList.add('hidden')"
-            onerror="this.previousElementSibling.classList.add('hidden');this.style.display='none';this.nextElementSibling.style.display='flex'">
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="drop-pol-ph">📷</div>
         </div>
         <div class="drop-pol-cap">${ph.cap}</div>
       `;
+      card.querySelectorAll('img').forEach(attachSpinner);
 
       // Click to pop to front / jiggle
       card.addEventListener('click', () => {
@@ -755,6 +755,7 @@ document.querySelectorAll('.hobby-tab-btn').forEach(btn => {
       a.dataset.index = i;
       a.innerHTML = '<div class="fan-card-frame"><img src="' + card.img + '" loading="lazy" alt="' + (card.label || '') + '"></div>' +
                     (card.label ? '<div class="fan-card-label">' + card.label + '</div>' : '');
+      a.querySelectorAll('img').forEach(attachSpinner);
 
       a.addEventListener('click', function(e) {
         var idx = parseInt(this.dataset.index);
